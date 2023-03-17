@@ -1,0 +1,2 @@
+
+        // gp[time] = b[smallest];
