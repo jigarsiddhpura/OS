@@ -48,16 +48,17 @@ int main()
 
         // main code for gantt chart
 
-        if(smallest != processPrev){
+        if (smallest != processPrev)
+        {
             // printf("%d - %d |",smallest+1,time);
-            gid[ctr] = smallest+1;
+            gid[ctr] = smallest + 1;
             gp[ctr] = time;
             ctr++;
         }
         processPrev = smallest;
         b[smallest]--;
 
-        // 
+        //
 
         if (b[smallest] == 0)
         {
@@ -71,7 +72,8 @@ int main()
 
             // calculating gantt chart's final completion time
 
-            if(count == n){
+            if (count == n)
+            {
                 gp[ctr] = time + 1;
                 ctr++;
             }
@@ -88,7 +90,7 @@ int main()
     // Printing Gantt Chart , Table & avg
 
     printf("Gantt Chart\n\n");
-    for (int i = 0; i < ctr-1; i++)
+    for (int i = 0; i < ctr - 1; i++)
     {
         printf("     P%d\t", gid[i]);
     }
