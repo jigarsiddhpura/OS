@@ -85,7 +85,7 @@ int main()
         ct[i] = tat[i] + a[i];
     }
 
-    // Printing Gantt Chart  Table
+    // Printing Gantt Chart , Table & avg
 
     printf("Gantt Chart\n\n");
     for (int i = 0; i < ctr-1; i++)
