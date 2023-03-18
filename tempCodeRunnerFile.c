@@ -1,2 +1,2 @@
-
-        // gp[time] = b[smallest];
+eque();
+            enque(p);
