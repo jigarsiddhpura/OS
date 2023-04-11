@@ -8,18 +8,18 @@ int main()
 
     // gid = gantt ids, gp = gantt processes
 
-    printf("enter the number of Processes:\n");
+    printf("enter the number of Processes: ");
     scanf("%d", &n);
     // n = 4;
-    printf("enter process id's\n");
+    printf("enter process id's: ");
     for (i = 0; i < n; i++)
         scanf("%d", &pid[i]);
     // int pid[10] = {1, 2, 3, 4};
-    printf("enter arrival time\n");
+    printf("enter arrival time: ");
     for (i = 0; i < n; i++)
         scanf("%d", &a[i]);
     // int a[10] = {0, 15, 30, 45};
-    printf("enter burst time\n");
+    printf("enter burst time: ");
     for (i = 0; i < n; i++)
         scanf("%d", &b[i]);
     // int b[10] = {20, 25, 10, 15};

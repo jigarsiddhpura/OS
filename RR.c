@@ -44,20 +44,34 @@ int main()
     int gid[100] = {-1};
     double wat = 0, tt = 0, end, tat[10], wt[10], ct[10];
 
-    int b[10] = {4, 5, 2, 1, 6, 3};
-    int a[10] = {0, 1, 2, 3, 4, 6};
-    int pid[10] = {1, 2, 3, 4, 5, 6};
-    for (int i = 0; i < n; i++){
+    // int b[10] = {4, 5, 2, 1, 6, 3};
+    // int a[10] = {0, 1, 2, 3, 4, 6};
+    // int pid[10] = {1, 2, 3, 4, 5, 6};
+    // n = 6;
+
+    int pid[10],a[10],b[10];
+    printf("Enter number of processess: ");
+    scanf("%d", &n);
+    printf("enter process id's: ");
+    for (i = 0; i < n; i++)
+        scanf("%d", &pid[i]);
+    printf("enter arrival time: ");
+    for (i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+    printf("enter burst time: ");
+    for (i = 0; i < n; i++)
+        scanf("%d", &b[i]);
+
+    for (int i = 0; i < n; i++)
+    {
         x[i] = b[i];
     }
-    n = 6;
     tq = 2;
 
     for (int i = 0; i < n; i++)
     {
         printf("%d ", b[i]);
     }
-
 
     // initialising
     enque(a[0]);
@@ -114,10 +128,9 @@ int main()
             int p = deque();
             enque(p);
         }
-        gp[ctr+1] = time;
+        gp[ctr + 1] = time;
         ctr++;
     }
-
 
     //  Printing Gantt Chart , Table & avg
 
@@ -127,7 +140,7 @@ int main()
         printf("     P%d\t", gid[i]);
     }
     printf("\n");
-    for (int i = 0; i < ctr+1; i++)
+    for (int i = 0; i < ctr + 1; i++)
     {
         printf("%d\t ", gp[i]);
     }
