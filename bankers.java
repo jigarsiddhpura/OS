@@ -54,7 +54,10 @@ public class bankers {
       i+=1;
     }
 
-    System.out.println(stateArr);
+    System.out.println("Sequence of resource allocation :");
+    for (int e = 0; e < stateArr.size(); e++) {
+      System.out.print("P"+stateArr.get(e)+" ");
+    }
 
   }
 }
