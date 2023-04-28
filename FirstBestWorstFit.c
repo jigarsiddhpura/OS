@@ -1,11 +1,11 @@
 #include <stdio.h>
 
-int   bsize[20],flag[20];
+int bsize[20], flag[20]={0};
 
 int findMax(int arr[], int flag[])
 {
-    int max = arr[0];
-    int index;
+    int max = -1;
+    int index = -1;
     for (int i = 0; i < 20; i++)
     {
         if (arr[i] > max && flag[i] == 0)
@@ -14,17 +14,12 @@ int findMax(int arr[], int flag[])
             index = i;
         }
     }
-    return max,index;
+    return index;
 }
 
 void main()
 {
-    int i, j, bno, pno, psize[20], allocation[20], allocationType;
-    for (int i = 0; i < 20; i++)
-    {
-        allocation[i] = -1;
-        flag[i] = 0;
-    }
+    int i, j, bno, pno, psize[20], allocation[20]={-1}, allocationType;
     printf("Enter the no. of blocks: ");
     scanf("%d", &bno);
     printf("Enter the size of each memory block: \n");
@@ -63,10 +58,10 @@ void main()
 
     case 1:
         // Best fit
-        for (int i = 0; i < pno; i++)
+        for (i = 0; i < pno; i++)
         {
             int indexPlaced = -1;
-            for (int j = 0; j < bno; j++)
+            for (j = 0; j < bno; j++)
             {
                 if (bsize[j] >= psize[i] && flag[j] == 0)
                 {
@@ -75,30 +70,27 @@ void main()
                     else if (bsize[j] < bsize[indexPlaced])
                         indexPlaced = j;
                 }
-                if (indexPlaced != -1)
-                {
-                    allocation[i] = indexPlaced;
-                    flag[indexPlaced] = 1;
-                }
+            }
+            if (indexPlaced != -1)
+            {
+                allocation[i] = indexPlaced;
+                flag[indexPlaced] = 1;
             }
         }
         break;
 
     case 2:
+        // worst fit
         for (int i = 0; i < pno; i++)
         {
             int indexPlaced = -1;
-            int max, indexOfMax = findMax(bsize[20], flag[20]);
-            if (psize[i] <= max)
+            int indexOfMax = findMax(bsize, flag);
+            if (indexOfMax != -1)
             {
-                allocation[i] = indexOfMax;
-                flag[i] = 1;
-                break;
+                indexPlaced = indexOfMax;
+                allocation[i] = indexPlaced;
+                flag[indexPlaced] = 1;
             }
-            // else{
-            //     allocation[i] = -2;
-            //     break;
-            // }
         }
         break;
 
@@ -106,10 +98,17 @@ void main()
         break;
     }
 
-    // for (int i = 0; i < 5; i++)
-    // {
-    //     printf("allocation[%d] = %d\n", i, allocation[i]);
-    // }
+    printf("\n");
+    for (int i = 0; i < 3; i++)
+    {
+        printf("allocation[%d] = %d\n", i, allocation[i]);
+    }
+
+    printf("\n");
+    for (int i = 0; i < 3; i++)
+    {
+        printf("flag[%d] = %d\n", i, flag[i]);
+    }
 
     printf("\nProcess No.\tMemory Size\t\tBlock No.\t\tProcess Size");
     switch (allocationType)
@@ -117,7 +116,7 @@ void main()
     case 0:
         for (i = 0; i < pno; i++)
         {
-            printf("\n%d\t\t%d\t\t\t", i + 1, bsize[i]);
+            printf("\n%d\t\t%d\t\t\t", i + 1, bsize[allocation[i]]);
             if (allocation[i] != -1)
                 printf("%d\t\t\t%d", allocation[i] + 1, psize[i]);
             else
@@ -126,24 +125,23 @@ void main()
         break;
 
     case 1:
-        for (i = 0; i < bno; i++)
+        for (i = 0; i < pno; i++)
         {
-            printf("\n%d\t\t%d\t\t", i + 1, bsize[allocation[i]]);
-            if (flag[i] == 1)
+            printf("\n%d\t\t%d\t\t\t", i + 1, bsize[allocation[i]]);
+            if (allocation[i] != -1)
                 printf("%d\t\t\t%d", allocation[i] + 1, psize[i]);
             else
-                printf("Not allocated\t\t-");
+                printf("Not allocated");
         }
+        break;
 
     case 2:
-        for (i = 0; i < bno; i++)
+        for (i = 0; i < pno; i++)
         {
             printf("\n%d\t\t%d\t\t", i + 1, bsize[allocation[i]]);
-            if (flag[i] == 1)
-                printf("%d\t\t\t%d", allocation[i] + 1, psize[i]);
-            else
-                printf("Not allocated\t\t-");
+            printf("%d\t\t\t%d", allocation[i] + 1, psize[i]);
         }
+        break;
 
     default:
         break;
