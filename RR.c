@@ -39,96 +39,97 @@ int deque()
 }
 int main()
 {
-    int x[10], i, j, tq, processId, highest = 0, count = 0, time = 0, ctr = 0, n, ganLen = 1, index = 0;
-    int gp[100] = {1};
-    int gid[100] = {-1};
-    double wat = 0, tt = 0, end, tat[10], wt[10], ct[10];
+    int burstTimeCopy[10], i, j, timeQuantum, processId, highestArrivalTime = 0, count = 0, time = 0, ctr = 0, n, ganLen = 1, index = 0;
+    int ganntTime[100] = {1};
+    int ganntProcess[100] = {-1};
+    double wat = 0, tt = 0, end, turnAroundTime[10], waiting_t[10], completionTime[10];
 
-    // int b[10] = {4, 5, 2, 1, 6, 3};
-    // int a[10] = {0, 1, 2, 3, 4, 6};
-    // int pid[10] = {1, 2, 3, 4, 5, 6};
+    // int burstTime[10] = {4, 5, 2, 1, 6, 3};
+    // int arrivalTime[10] = {0, 1, 2, 3, 4, 6};
+    // int allProcessId[10] = {1, 2, 3, 4, 5, 6};
     // n = 6;
 
-    int pid[10],a[10],b[10];
+    int allProcessId[10],arrivalTime[10],burstTime[10];
     printf("Enter number of processess: ");
     scanf("%d", &n);
     printf("enter process id's: ");
     for (i = 0; i < n; i++)
-        scanf("%d", &pid[i]);
+        scanf("%d", &allProcessId[i]);
     printf("enter arrival time: ");
     for (i = 0; i < n; i++)
-        scanf("%d", &a[i]);
+        scanf("%d", &arrivalTime[i]);
     printf("enter burst time: ");
     for (i = 0; i < n; i++)
-        scanf("%d", &b[i]);
+        scanf("%d", &burstTime[i]);
 
     for (int i = 0; i < n; i++)
     {
-        x[i] = b[i];
+        burstTimeCopy[i] = burstTime[i];
     }
-    tq = 2;
+    timeQuantum = 2;
 
     for (int i = 0; i < n; i++)
     {
-        printf("%d ", b[i]);
+        printf("%d ", burstTime[i]);
     }
 
     // initialising
-    enque(a[0]);
-    gp[0] = a[0];
+    enque(arrivalTime[0]);
+    ganntTime[0] = arrivalTime[0];
+
     while (count != n)
     {
         processId = queue[front];
 
         for (i = 0; i < n; i++)
         {
-            if (a[i] == processId)
+            if (arrivalTime[i] == processId)
             {
                 index = i;
             }
         }
 
-        gid[ctr] = pid[index];
+        ganntProcess[ctr] = allProcessId[index];
 
-        if (b[index] <= tq)
+        if (burstTime[index] <= timeQuantum)
         {
-            time = time + b[index];
-            b[index] = 0;
+            time += burstTime[index];
+            burstTime[index] = 0;
             count++;
             for (i = 0; i < n; i++)
             {
-                if (a[i] > index && a[i] <= time && b[i] != 0 && a[i] > highest)
+                if (i > index && arrivalTime[i] <= time && burstTime[i] != 0 && arrivalTime[i] > highestArrivalTime)
                 {
-                    enque(a[i]);
-                    highest = a[i];
+                    enque(arrivalTime[i]);
+                    highestArrivalTime = arrivalTime[i];
                 }
             }
             int p = deque();
             ganLen--;
-            ct[index] = time;
-            // printf("ct = %lf ",ct[processId]);
-            tat[index] = ct[index] - a[index];
-            wt[index] = tat[index] - x[index];
+            completionTime[index] = time;
+            // printf("ct = %lf ",completionTime[processId]);
+            turnAroundTime[index] = completionTime[index] - arrivalTime[index];
+            waiting_t[index] = turnAroundTime[index] - burstTimeCopy[index];
 
-            wat = wat + wt[index];
-            tt = tt + tat[index];
+            wat = wat + waiting_t[index];
+            tt = tt + turnAroundTime[index];
         }
         else
         {
-            b[index] = b[index] - tq;
-            time = time + tq;
+            burstTime[index] -= timeQuantum;
+            time += timeQuantum;
             for (i = 0; i < n; i++)
             {
-                if (a[i] > index && a[i] <= time && b[i] != 0 && a[i] > highest)
+                if (i > index && arrivalTime[i] <= time && burstTime[i] != 0 && arrivalTime[i] > highestArrivalTime)
                 {
-                    enque(a[i]);
-                    highest = a[i];
+                    enque(arrivalTime[i]);
+                    highestArrivalTime = arrivalTime[i];
                 }
             }
             int p = deque();
             enque(p);
         }
-        gp[ctr + 1] = time;
+        ganntTime[ctr + 1] = time;
         ctr++;
     }
 
@@ -137,19 +138,19 @@ int main()
     printf("\nGantt Chart\n\n");
     for (int i = 0; i < ctr; i++)
     {
-        printf("     P%d\t", gid[i]);
+        printf("     P%d\t", ganntProcess[i]);
     }
     printf("\n");
     for (int i = 0; i < ctr + 1; i++)
     {
-        printf("%d\t ", gp[i]);
+        printf("%d\t ", ganntTime[i]);
     }
     printf("\n\n");
 
     printf("processId Arrival Time\tBurst Time  Completion Time  Turn Around Time\t  Waiting Time\n");
     for (int i = 0; i < n; i++)
     {
-        printf("  %d\t    %d\t\t   %d\t\t%lf\t%lf\t    %lf\n", pid[i], a[i], x[i], ct[i], tat[i], wt[i]);
+        printf("  %d\t    %d\t\t   %d\t\t%lf\t%lf\t    %lf\n", allProcessId[i], arrivalTime[i], burstTimeCopy[i], completionTime[i], turnAroundTime[i], waiting_t[i]);
     }
 
     printf("\n\nAverage waiting time = %lf\n", wat / n);

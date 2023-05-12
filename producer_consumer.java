@@ -3,11 +3,10 @@ import java.util.*;
 public class producer_consumer{
 
     public static int n = 7;
-    public static int full = 0, empty = 7;
+    public static int full = 0, empty = n;
     public static Stack<Integer> buffer = new Stack<Integer>();
     
     public static void main(String[] args) {
-        buffer.setSize(n);
 
         Producer p = new Producer();
         p.start();
@@ -31,22 +30,29 @@ public class producer_consumer{
 class Producer extends Thread{
     public synchronized void run(){
         producer_consumer obj1 = new producer_consumer();
-        int[] itemp = {1,2,3,4,5,6,7};
+        int[] item_p = {1,2,3,4,5,6,7};
         int i = 0, in = 0, s;
         try {
-            while(i != itemp.length){
+            while(i != item_p.length){
                 while(obj1.full == obj1.n){
-                    return ;
+                    if(obj1.buffer.size() > 3){
+                        System.out.println("waiting for consumer to consume ( buffer is full )");
+                        Thread.sleep(2000);
+                    }
+                    else {
+                        System.out.println("Exit , Every item produced");
+                        return;
+                    } 
                 }
                 obj1.empty-=1;
                 s = 0;
-                obj1.push_item(itemp[i]);
-                // buffer[in] = itemp;
+                obj1.push_item(item_p[i]);
+                // buffer[in] = item_p;
                 // in = (in+1)%n;
                 s = 1;
                 obj1.full+=1;
                 i++;
-                Thread.sleep(1000);
+                Thread.sleep(500);
             }
         } catch (Exception e) {
             System.out.println("exception in Producer : "+e);
@@ -62,7 +68,14 @@ class Consumer extends Thread{
             Thread.sleep(50);
             while(true){
                 while(obj2.full == 0){
-                    return ;
+                    if(i==obj2.n){
+                        System.out.println("Exit , Every item consumed");
+                        return;
+                    }
+                    else{
+                        System.out.println("waiting for producer to produce ( buffer is empty )");
+                        Thread.sleep(2000);
+                    }
                 }
                 obj2.full-=1;
                 s = 0;
@@ -71,7 +84,7 @@ class Consumer extends Thread{
                 obj2.empty+=1;
                 s = 1;
                 i++;
-                Thread.sleep(1000);
+                Thread.sleep(7000);
             }
         } catch (Exception e) {
             System.out.println("exception in Consumer : "+e);
