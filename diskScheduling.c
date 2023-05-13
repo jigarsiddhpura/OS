@@ -1,154 +1,154 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void printtm(int t[], int n)
+void printTrackMovements(int track_no[], int n)
 {
-    int tm = 0;
+    int time = 0;
     printf("\n");
     for (int i = 0; i < n; i++)
     {
         if (i != 0)
         {
-            printf("->%d", t[i]);
-            tm = tm + abs(t[i] - t[i - 1]);
+            printf("->%d", track_no[i]);
+            time += abs(track_no[i] - track_no[i - 1]);
         }
         else
         {
-            printf("%d", t[i]);
+            printf("%d", track_no[i]);
         }
     }
-    printf("\nTotal number of track movements : %d", tm);
-    printf("\nAverage seek time : %d\n\n", tm/n);
+    printf("\nTotal number of track movements : %d", time);
+    printf("\nAverage seek time : %d\n\n", time / n);
 }
-void fcfs(int q[], int tn, int h, int n)
+
+void fcfs(int sortedQ[], int trackCount, int h, int n)
 {
     int th = 0, tm[100], j = 0;
     tm[j++] = h;
     for (int i = 0; i < n; i++)
     {
-        tm[j++] = q[i];
+        tm[j++] = sortedQ[i];
     }
-    printtm(tm, j);
+    printTrackMovements(tm, j);
 }
 
-
-int allvist(int a[], int n)
+int allVisited(int arr[], int n)
 {
-    int c=0;
-    for(int i=0;i<n;i++)
+    int visited = 0;
+    for (int i = 0; i < n; i++)
     {
-        if(a[i]==1){c=c+1;}
-    }
-
-    if(c==n){return 1;}
-    else{return 0;}
-}
-void sstf(int q[], int tn, int h, int n, int vis[])
-{
-    int j=0, res[100],pos;
-    // printf("%d->",h);
-    res[j++]=h;
-    while(allvist(vis,n)==0)
-    {
-        int min = 999999999,temp;
-        for(int i=0;i<n;i++)
+        if (arr[i] == 1)
         {
-            if(abs((q[i])-h)<min && vis[i]==0)
+            visited += 1;
+        }
+    }
+
+    if (visited == n)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+void SSTF(int sortedQ[], int trackCount, int head, int n, int visited[])
+{
+    int j = 0, trackMovements[100], indexOfNearestTrack;
+    trackMovements[j++] = head;
+    while (allVisited(visited, n) == 0)
+    {
+        int min = 999999999, NearestTrack;
+        for (int i = 0; i < n; i++)
+        {
+            if (abs((sortedQ[i]) - head) < min && visited[i] == 0)
             {
-                min = abs((q[i])-h);
-                // printf("(min : %d)",min);
-                pos=i;
-                temp=q[i];
+                min = abs((sortedQ[i]) - head);
+                indexOfNearestTrack = i;
+                NearestTrack = sortedQ[i];
             }
         }
-        h=temp;
-        vis[pos]=1;
-        res[j++]=temp;
-        // printf(" %d ",res[j-1]);
+        head = NearestTrack;
+        visited[indexOfNearestTrack] = 1;
+        trackMovements[j++] = NearestTrack;
     }
-    
-    printtm(res,j);
+
+    printTrackMovements(trackMovements, j);
 }
-void scan(int q[], int tn, int h, int n)
+
+void SCAN(int sortedQ[], int trackCount, int h, int n)
 {
     int tm[200], j = 0, tb[200], b = 0;
     tm[j++] = h;
     for (int i = 0; i < n; i++)
     {
-        if (q[i] >= h)
+        if (sortedQ[i] >= h)
         {
-            tm[j++] = q[i];
+            tm[j++] = sortedQ[i];
         }
         else
         {
-            tb[b++] = q[i];
+            tb[b++] = sortedQ[i];
         }
     }
-    tm[j++] = tn - 1;
+    tm[j++] = trackCount - 1;
     for (int i = b - 1; i >= 0; i--)
     {
         tm[j++] = tb[i];
     }
-    printtm(tm, j);
+    printTrackMovements(tm, j);
 }
-void look(int q[], int tn, int h, int n)
+
+void CSCAN(int sortedQ[], int trackCount, int h, int n)
 {
     int tm[200], j = 0, tb[200], b = 0;
     tm[j++] = h;
     for (int i = 0; i < n; i++)
     {
-        if (q[i] >= h)
+        if (sortedQ[i] >= h)
         {
-            tm[j++] = q[i];
+            tm[j++] = sortedQ[i];
         }
         else
         {
-            tb[b++] = q[i];
+            tb[b++] = sortedQ[i];
         }
     }
-    for (int i = b - 1; i >= 0; i--)
-    {
-        tm[j++] = tb[i];
-    }
-    printtm(tm, j);
-}
-void cscan(int q[], int tn, int h, int n)
-{
-    int tm[200], j = 0, tb[200], b = 0;
-    tm[j++] = h;
-    for (int i = 0; i < n; i++)
-    {
-        if (q[i] >= h)
-        {
-            tm[j++] = q[i];
-        }
-        else
-        {
-            tb[b++] = q[i];
-        }
-    }
-    tm[j++] = tn - 1;
+    tm[j++] = trackCount - 1;
     tm[j++] = 0;
     for (int i = 0; i < b; i++)
     {
         tm[j++] = tb[i];
     }
-    printtm(tm, j);
+    printTrackMovements(tm, j);
 }
-void main()
+
+void LOOK(int sortedQ[], int trackCount, int h, int n)
 {
-    int queue[] = {82,170,43,140,24,16,190};
-    int qsize = sizeof(queue) / sizeof(queue[0]);
-    int vis[100];
-    for (int i=0;i<qsize;i++){vis[i]=0;}
-    // printf("%d",vis[qsize+1]);
-    int trackno = 200;
-    int head = 50, t;
-    printf("Request : ");
-    for(int i =0;i<qsize;i++){printf("%d, ",queue[i]);}
-    printf("\nHead : %d\nTotal Tracks : %d \nScheduling algorithms -> \n",head,trackno);
-    printf("FCFS : ");
-    fcfs(queue, trackno, head, qsize);
+    int tm[200], j = 0, tb[200], b = 0;
+    tm[j++] = h;
+    for (int i = 0; i < n; i++)
+    {
+        if (sortedQ[i] >= h)
+        {
+            tm[j++] = sortedQ[i];
+        }
+        else
+        {
+            tb[b++] = sortedQ[i];
+        }
+    }
+    for (int i = b - 1; i >= 0; i--)
+    {
+        tm[j++] = tb[i];
+    }
+    printTrackMovements(tm, j);
+}
+
+int *sort(int queue[], int qsize)
+{
+    int t;
     for (int i = 0; i < qsize - 1; i++)
     {
         for (int j = 0; j < qsize - 1; j++)
@@ -161,12 +161,33 @@ void main()
             }
         }
     }
+    return queue;
+}
+
+void main()
+{
+    int queue[] = {82, 170, 43, 140, 24, 16, 190};
+    int qsize = sizeof(queue) / sizeof(queue[0]);
+    int visited[100] = {0};
+
+    int trackCount = 200;
+    int head = 50, t;
+    printf("Request : ");
+
+    printf("FCFS : ");
+    fcfs(queue, trackCount, head, qsize);
+
+    int *sortedQueue = sort(queue,qsize);
+
     printf("SSTF : ");
-    sstf(queue, trackno, head, qsize, vis);
+    SSTF(sortedQueue, trackCount, head, qsize, visited);
+
     printf("SCAN : ");
-    scan(queue, trackno, head, qsize);
+    SCAN(sortedQueue, trackCount, head, qsize);
+
     printf("CSCAN :");
-    cscan(queue, trackno, head, qsize);
+    CSCAN(sortedQueue, trackCount, head, qsize);
+
     printf("LOOK :");
-    look(queue, trackno, head, qsize);
+    LOOK(sortedQueue, trackCount, head, qsize);
 }
