@@ -39,13 +39,11 @@ public class OptimalPageReplacement {
                         futurePageIndexes.add(j);
                         indexToReplace = j;
                         futurePageCount++;
-                        // System.out.println("fpc="+futurePageCount);
                         break;
                     }
+                }
             }
         }
-        
-    }
 
         if(indexToReplace==-1){
             indexToReplace = 0;
@@ -58,7 +56,6 @@ public class OptimalPageReplacement {
                 }
             }
         }
-        // System.out.println("replace="+pageFrames.get(indexToReplace)+" at column "+allPageRequests[currentIndex]);
         return indexToReplace;
     }
 }
