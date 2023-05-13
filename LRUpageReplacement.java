@@ -22,7 +22,7 @@ public class LRUpageReplacement {
 
                 pageFaults++;
             } else {
-                pageFrames.removeLast();
+                pageFrames.removeFirst();
                 pageFrames.addLast(page);
             }
             System.out.println(pageFrames);
