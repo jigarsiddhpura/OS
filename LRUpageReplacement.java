@@ -3,7 +3,7 @@ import java.util.*;
 
 public class LRUpageReplacement {
     public static void main(String[] args) {
-        int[] pageRequests = { 1, 2, 1, 0, 3, 0, 4, 2, 4};
+        int[] pageRequests = {4 , 7, 6, 1, 7, 6, 1, 2, 7, 2};
         int numPageFrames = 3;
 
         LinkedList<Integer> pageFrames = new LinkedList<>();
