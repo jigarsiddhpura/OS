@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 void printtm(int t[], int n)
 {
     int tm = 0;

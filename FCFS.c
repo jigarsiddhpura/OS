@@ -1,99 +1,58 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-double mean(int arr[], int n)
-{
-    int sum = 0;
-    for (int i = 0; i < n; i++)
-    {
-        sum += arr[i];
+// Define a struct to represent a process
+typedef struct {
+    int process_id;     // unique identifier for the process
+    int arrival_time;   // time at which the process arrives
+    int burst_time;     // time required by the process to complete
+    int completion_time;// time at which the process completes
+} process_t;
+
+// Function to perform the FCFS scheduling algorithm
+void fcfs_scheduler(process_t processes[], int num_processes) {
+    int current_time = 0;   // current time
+    int i;
+
+    // Iterate through all processes
+    for (i = 0; i < num_processes; i++) {
+        // If the process has not yet arrived, wait for it
+        if (current_time < processes[i].arrival_time) {
+            current_time = processes[i].arrival_time;
+        }
+
+        // Set the completion time for the process
+        processes[i].completion_time = current_time + processes[i].burst_time;
+
+        // Update the current time to be the completion time of the process
+        current_time = processes[i].completion_time;
     }
-    return (double)sum / (double)n;
 }
 
-int main()
-{
-    // int pid[] = {1, 2, 3, 4, 5};
-    // int arrTime[] = {0, 1, 2, 3, 4};
-    // int burstTime[] = {4, 3, 1, 2, 5};
-    // int n = sizeof(arrTime) / sizeof(arrTime[0]);
+int main() {
+    int i, num_processes;
 
-    int i,n, pid[10],arrTime[10],burstTime[10];
-    printf("Enter number of processes: ");
-    scanf("%d", &n);
-    printf("enter process id's: ");
-    for (i = 0; i < n; i++)
-        scanf("%d", &pid[i]);
-    printf("enter arrival time: ");
-    for (i = 0; i < n; i++)
-        scanf("%d", &arrTime[i]);
-    printf("enter burst time: ");
-    for (i = 0; i < n; i++)
-        scanf("%d", &burstTime[i]);
+    // Get the number of processes
+    printf("Enter the number of processes: ");
+    scanf("%d", &num_processes);
 
-    int ganttC[n + 1], ct[n];
-    ganttC[0] = 0;
-    int dict[n][2];
-    int compTime = burstTime[0];
-    int sum = 0;
+    // Declare an array of processes
+    process_t processes[num_processes];
 
-    for (int i = 0; i < n; i++)
-    {
-        dict[i][0] = arrTime[i];
-        dict[i][1] = burstTime[i];
+    // Get the arrival time and burst time for each process
+    for (i = 0; i < num_processes; i++) {
+        printf("Enter arrival time and burst time for process %d: ", i+1);
+        scanf("%d %d", &processes[i].arrival_time, &processes[i].burst_time);
+        processes[i].process_id = i+1;
     }
 
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = i + 1; j < n; j++)
-        {
-            if (dict[i][0] > dict[j][0])
-            {
-                int temp1 = dict[i][0];
-                int temp2 = dict[i][1];
-                dict[i][0] = dict[j][0];
-                dict[i][1] = dict[j][1];
-                dict[j][0] = temp1;
-                dict[j][1] = temp2;
-            }
-        }
+    // Perform the FCFS scheduling algorithm
+    fcfs_scheduler(processes, num_processes);
+
+    // Print the completion time for each process
+    printf("\nCompletion times:\n");
+    for (i = 0; i < num_processes; i++) {
+        printf("Process %d: %d\n", processes[i].process_id, processes[i].completion_time);
     }
 
-    for (int i = 0; i < n; i++)
-    {
-        ganttC[i + 1] = sum + dict[i][1];
-        sum += dict[i][1];
-    }
-
-    int turnAroundTime[n];
-    for (int i = 0; i < n; i++)
-    {
-        turnAroundTime[i] = ganttC[i + 1] - arrTime[i];
-    }
-
-    int weightingTime[n];
-    for (int i = 0; i < n; i++)
-    {
-        weightingTime[i] = turnAroundTime[i] - burstTime[i];
-    }
-
-    double avgWT = mean(weightingTime, n);
-    double avgTAT = mean(turnAroundTime, n);
-
-    for (int i = 0; i < n; i++)
-    {
-        ct[i] = turnAroundTime[i] + arrTime[i];
-    }
-
-    //  Printing Gantt Chart , Table & avg
-
-    printf("processId Arrival Time\tBurst Time  Completion Time  Turn Around Time\t  Waiting Time\n");
-    for (int i = 0; i < n; i++)
-    {
-        printf("  %d\t    %d\t\t   %d\t\t%d\t\t%d\t\t\t%d\n", pid[i], arrTime[i], burstTime[i], ct[i], turnAroundTime[i], weightingTime[i]);
-    }
-
-    printf("\n\nAverage waiting time = %lf\n", avgWT);
-    printf("Average Turnaround time = %lf\n\n", avgTAT);
     return 0;
 }

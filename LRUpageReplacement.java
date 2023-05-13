@@ -25,6 +25,7 @@ public class LRUpageReplacement {
                 pageFrames.removeLast();
                 pageFrames.addLast(page);
             }
+            System.out.println(pageFrames);
         }
 
         System.out.println("Page faults: " + pageFaults);

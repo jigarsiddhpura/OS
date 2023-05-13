@@ -19,7 +19,7 @@ int findMax(int arr[], int flag[])
 
 void main()
 {
-    int i, j, bno, pno, psize[20], allocation[20]={-1}, allocationType;
+    int i, j, bno, pno, psize[20], alloctedIndex[20]={-1}, allocationType;
     printf("Enter the no. of blocks: ");
     scanf("%d", &bno);
     printf("Enter the size of each memory block: \n");
@@ -48,7 +48,7 @@ void main()
             {
                 if (bsize[j] >= psize[i] && flag[j] == 0)
                 {
-                    allocation[j] = i; // ???????????
+                    alloctedIndex[j] = i; // ???????????
                     flag[j] = 1;
                     break;
                 }
@@ -73,7 +73,7 @@ void main()
             }
             if (indexPlaced != -1)
             {
-                allocation[i] = indexPlaced;
+                alloctedIndex[i] = indexPlaced;
                 flag[indexPlaced] = 1;
             }
         }
@@ -88,7 +88,7 @@ void main()
             if (indexOfMax != -1)
             {
                 indexPlaced = indexOfMax;
-                allocation[i] = indexPlaced;
+                alloctedIndex[i] = indexPlaced;
                 flag[indexPlaced] = 1;
             }
         }
@@ -101,7 +101,7 @@ void main()
     printf("\n");
     for (int i = 0; i < 3; i++)
     {
-        printf("allocation[%d] = %d\n", i, allocation[i]);
+        printf("alloctedIndex[%d] = %d\n", i, alloctedIndex[i]);
     }
 
     printf("\n");
@@ -116,9 +116,9 @@ void main()
     case 0:
         for (i = 0; i < pno; i++)
         {
-            printf("\n%d\t\t%d\t\t\t", i + 1, bsize[allocation[i]]);
-            if (allocation[i] != -1)
-                printf("%d\t\t\t%d", allocation[i] + 1, psize[i]);
+            printf("\n%d\t\t%d\t\t\t", i + 1, bsize[alloctedIndex[i]]);
+            if (alloctedIndex[i] != -1)
+                printf("%d\t\t\t%d", alloctedIndex[i] + 1, psize[i]);
             else
                 printf("Not allocated");
         }
@@ -127,9 +127,9 @@ void main()
     case 1:
         for (i = 0; i < pno; i++)
         {
-            printf("\n%d\t\t%d\t\t\t", i + 1, bsize[allocation[i]]);
-            if (allocation[i] != -1)
-                printf("%d\t\t\t%d", allocation[i] + 1, psize[i]);
+            printf("\n%d\t\t%d\t\t\t", i + 1, bsize[alloctedIndex[i]]);
+            if (alloctedIndex[i] != -1)
+                printf("%d\t\t\t%d", alloctedIndex[i] + 1, psize[i]);
             else
                 printf("Not allocated");
         }
@@ -138,8 +138,8 @@ void main()
     case 2:
         for (i = 0; i < pno; i++)
         {
-            printf("\n%d\t\t%d\t\t", i + 1, bsize[allocation[i]]);
-            printf("%d\t\t\t%d", allocation[i] + 1, psize[i]);
+            printf("\n%d\t\t%d\t\t", i + 1, bsize[alloctedIndex[i]]);
+            printf("%d\t\t\t%d", alloctedIndex[i] + 1, psize[i]);
         }
         break;
 

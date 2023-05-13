@@ -24,6 +24,11 @@ public class producer_consumer{
         Integer y = (Integer) buffer.pop();
         System.out.println("Popped "+y);
     }
+
+    // Getter method to access the stack
+    public static Integer getBufferSize() {
+        return buffer.size();
+    }
 }
 
 
@@ -35,7 +40,8 @@ class Producer extends Thread{
         try {
             while(i != item_p.length){
                 while(obj1.full == obj1.n){
-                    if(obj1.buffer.size() > 3){
+                    Integer size = obj1.getBufferSize();
+                    if(size > 3){
                         System.out.println("waiting for consumer to consume ( buffer is full )");
                         Thread.sleep(2000);
                     }
@@ -84,7 +90,7 @@ class Consumer extends Thread{
                 obj2.empty+=1;
                 s = 1;
                 i++;
-                Thread.sleep(7000);
+                Thread.sleep(3000);
             }
         } catch (Exception e) {
             System.out.println("exception in Consumer : "+e);
